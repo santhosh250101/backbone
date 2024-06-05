@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenText Landing Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            font-size: 3em;
+            background-color: #f0f0f0;
+        }
+        #text {
+            visibility: hidden;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js"></script>
+</head>
+<body>
+    <div id="text"></div>
+
+    <script>
+        const TextView = Backbone.View.extend({
+            el: '#text',
+            text: 'opentext',
+            index: 0,
+            interval: 200, // 0.2 seconds
+
+            initialize: function() {
+                this.$el.css('visibility', 'visible');
+                this.displayNextCharacter();
+            },
+
+            displayNextCharacter: function() {
+                if (this.index < this.text.length) {
+                    this.$el.append(this.text.charAt(this.index % 8));
+                    this.index++;
+                    setTimeout(this.displayNextCharacter.bind(this), this.interval);
+                }
+                else if(this.index === this.text.length){
+                    this.index =0;
+                    this.$el.replaceWith("");
+                    setTimeout(this.displayNextCharacter.bind(this), this.interval);
+                }
+            }
+        });
+
+        $(document).ready(function() {
+            const textView = new TextView();
+        });
+    </script>
+</body>
+</html>
